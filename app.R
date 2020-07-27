@@ -56,9 +56,12 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   output$mycamap = renderLeaflet({
-    mapCounties = map("county", "california", fill = TRUE, plot = FALSE)
-    leaflet(data = mapCounties) %>% addTiles() %>%
-      addPolygons(fillColor = topo.colors(30, alpha = NULL), stroke = FALSE)
+    leaflet(counties) %>%
+      addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.5,
+                  fillColor = ~colorQuantile("YlOrRd", ALAND)(ALAND),
+                  highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                      bringToFront = TRUE))
   })
   
   output$outfig = renderPlot({
